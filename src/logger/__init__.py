@@ -23,10 +23,6 @@ def configure_logger():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     
-    # Clear existing handlers to avoid duplicates on reloads
-    if logger.hasHandlers():
-        logger.handlers.clear()
-    
     # Define formatter
     formatter = logging.Formatter("[ %(asctime)s ] %(name)s - %(levelname)s - %(message)s")
 
@@ -46,18 +42,3 @@ def configure_logger():
 
 # Configure the logger
 configure_logger()
-
-def get_logger(name=None):
-    """
-    Returns a configured logger.
-    
-    Args:
-        name: Optional name for the logger (typically __name__ from the calling module)
-    
-    Returns:
-        A configured logger instance
-    """
-    return logging.getLogger(name)
-
-# Export a pre-configured logger
-logger = logging.getLogger("vehicle_insurance")

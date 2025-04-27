@@ -1,10 +1,16 @@
 import os
 from datetime import date
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # For MongoDB connection
-DATABASE_NAME = "Vehicle-Insurance"
+DATABASE_NAME = "Vehicle-Insurance" 
 COLLECTION_NAME = "Vehicle-Data"
 MONGODB_URL_KEY = "MONGODB_URL"
+# Get MongoDB URL directly from environment variable
+MONGODB_URL = os.getenv(MONGODB_URL_KEY)
 
 PIPELINE_NAME: str = ""
 ARTIFACT_DIR: str = "artifact"
@@ -20,9 +26,11 @@ TRAIN_FILE_NAME: str = "train.csv"
 TEST_FILE_NAME: str = "test.csv"
 SCHEMA_FILE_PATH = os.path.join("config", "schema.yaml")
 
-
+# AWS Configuration - Get values from environment variables
 AWS_ACCESS_KEY_ID_ENV_KEY = "AWS_ACCESS_KEY_ID"
 AWS_SECRET_ACCESS_KEY_ENV_KEY = "AWS_SECRET_ACCESS_KEY"
+AWS_ACCESS_KEY_ID = os.getenv(AWS_ACCESS_KEY_ID_ENV_KEY)
+AWS_SECRET_ACCESS_KEY = os.getenv(AWS_SECRET_ACCESS_KEY_ENV_KEY)
 REGION_NAME = "us-east-1"
 
 
@@ -67,9 +75,10 @@ MIN_SAMPLES_SPLIT_RANDOM_STATE: int = 101
 MODEL Evaluation related constants
 """
 MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 0.02
-MODEL_BUCKET_NAME = "my-model-mlopsproj"
-MODEL_PUSHER_S3_KEY = "model-registry"
+MODEL_BUCKET_NAME = "random-12"
+MODEL_PUSHER_S3_KEY = "model-registry12"
 
 
-APP_HOST = "0.0.0.0"
-APP_PORT = 5000
+# App Configuration - Get values from environment variables
+APP_HOST = os.getenv("APP_HOST", "0.0.0.0")
+APP_PORT = int(os.getenv("APP_PORT", 5000))

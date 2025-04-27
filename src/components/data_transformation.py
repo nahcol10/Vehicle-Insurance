@@ -9,7 +9,7 @@ from sklearn.compose import ColumnTransformer
 from src.constants import TARGET_COLUMN, SCHEMA_FILE_PATH, CURRENT_YEAR
 from src.entity.config_entity import DataTransformationConfig
 from src.entity.artifact_entity import DataTransformationArtifact, DataIngestionArtifact, DataValidationArtifact
-from src.exception import CustomException
+from src.exception import MyException
 from src.logger import logging
 from src.utils.main_utils import save_object, save_numpy_array_data, read_yaml_file
 
@@ -24,18 +24,18 @@ class DataTransformation:
             self.data_validation_artifact = data_validation_artifact
             self._schema_config = read_yaml_file(file_path=SCHEMA_FILE_PATH)
         except Exception as e:
-            raise CustomException(e, sys)
+            raise MyException(e, sys)
 
     @staticmethod
     def read_data(file_path) -> pd.DataFrame:
         try:
             return pd.read_csv(file_path)
         except Exception as e:
-            raise CustomException(e, sys)
+            raise MyException(e, sys)
 
     def get_data_transformer_object(self) -> Pipeline:
         """
-        Creates and returns a data transformer object for the data,
+        Creates and returns a data transformer object for the data, 
         including gender mapping, dummy variable creation, column renaming,
         feature scaling, and type adjustments.
         """
@@ -69,7 +69,7 @@ class DataTransformation:
 
         except Exception as e:
             logging.exception("Exception occurred in get_data_transformer_object method of DataTransformation class")
-            raise CustomException(e, sys) from e
+            raise MyException(e, sys) from e
 
     def _map_gender_column(self, df):
         """Map Gender column to 0 for Female and 1 for Male."""
@@ -173,4 +173,4 @@ class DataTransformation:
             )
 
         except Exception as e:
-            raise CustomException(e, sys) from e
+            raise MyException(e, sys) from e

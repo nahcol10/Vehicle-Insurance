@@ -5,7 +5,7 @@ from typing import Optional
 
 from src.configuration.mongo_db_connection import MongoDBClient
 from src.constants import DATABASE_NAME
-from src.exception import CustomException
+from src.exception import MyException
 
 class Proj1Data:
     """
@@ -19,7 +19,7 @@ class Proj1Data:
         try:
             self.mongo_client = MongoDBClient(database_name=DATABASE_NAME)
         except Exception as e:
-            raise CustomException(e, sys)
+            raise MyException(e, sys)
 
     def export_collection_as_dataframe(self, collection_name: str, database_name: Optional[str] = None) -> pd.DataFrame:
         """
@@ -54,4 +54,4 @@ class Proj1Data:
             return df
 
         except Exception as e:
-            raise CustomException(e, sys)
+            raise MyException(e, sys)

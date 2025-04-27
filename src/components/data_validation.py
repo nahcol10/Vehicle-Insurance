@@ -6,7 +6,7 @@ import pandas as pd
 
 from pandas import DataFrame
 
-from src.exception import CustomException
+from src.exception import MyException
 from src.logger import logging
 from src.utils.main_utils import read_yaml_file
 from src.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact
@@ -23,15 +23,15 @@ class DataValidation:
         try:
             self.data_ingestion_artifact = data_ingestion_artifact
             self.data_validation_config = data_validation_config
-            self._schema_config = read_yaml_file(file_path=SCHEMA_FILE_PATH)
+            self._schema_config =read_yaml_file(file_path=SCHEMA_FILE_PATH)
         except Exception as e:
-            raise CustomException(e, sys)
+            raise MyException(e,sys)
 
     def validate_number_of_columns(self, dataframe: DataFrame) -> bool:
         """
         Method Name :   validate_number_of_columns
         Description :   This method validates the number of columns
-
+        
         Output      :   Returns bool value based on validation results
         On Failure  :   Write an exception log and then raise an exception
         """
@@ -40,13 +40,13 @@ class DataValidation:
             logging.info(f"Is required column present: [{status}]")
             return status
         except Exception as e:
-            raise CustomException(e, sys)
+            raise MyException(e, sys)
 
     def is_column_exist(self, df: DataFrame) -> bool:
         """
         Method Name :   is_column_exist
         Description :   This method validates the existence of a numerical and categorical columns
-
+        
         Output      :   Returns bool value based on validation results
         On Failure  :   Write an exception log and then raise an exception
         """
@@ -58,32 +58,34 @@ class DataValidation:
                 if column not in dataframe_columns:
                     missing_numerical_columns.append(column)
 
-            if len(missing_numerical_columns) > 0:
+            if len(missing_numerical_columns)>0:
                 logging.info(f"Missing numerical column: {missing_numerical_columns}")
+
 
             for column in self._schema_config["categorical_columns"]:
                 if column not in dataframe_columns:
                     missing_categorical_columns.append(column)
 
-            if len(missing_categorical_columns) > 0:
+            if len(missing_categorical_columns)>0:
                 logging.info(f"Missing categorical column: {missing_categorical_columns}")
 
-            return False if len(missing_categorical_columns) > 0 or len(missing_numerical_columns) > 0 else True
+            return False if len(missing_categorical_columns)>0 or len(missing_numerical_columns)>0 else True
         except Exception as e:
-            raise CustomException(e, sys) from e
+            raise MyException(e, sys) from e
 
     @staticmethod
     def read_data(file_path) -> DataFrame:
         try:
             return pd.read_csv(file_path)
         except Exception as e:
-            raise CustomException(e, sys)
+            raise MyException(e, sys)
+        
 
     def initiate_data_validation(self) -> DataValidationArtifact:
         """
         Method Name :   initiate_data_validation
         Description :   This method initiates the data validation component for the pipeline
-
+        
         Output      :   Returns bool value based on validation results
         On Failure  :   Write an exception log and then raise an exception
         """
@@ -145,4 +147,4 @@ class DataValidation:
             logging.info(f"Data validation artifact: {data_validation_artifact}")
             return data_validation_artifact
         except Exception as e:
-            raise CustomException(e, sys) from e
+            raise MyException(e, sys) from e

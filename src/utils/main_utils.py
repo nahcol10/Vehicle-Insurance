@@ -6,7 +6,7 @@ import dill
 import yaml
 from pandas import DataFrame
 
-from src.exception import CustomException
+from src.exception import MyException
 from src.logger import logging
 
 
@@ -16,7 +16,7 @@ def read_yaml_file(file_path: str) -> dict:
             return yaml.safe_load(yaml_file)
 
     except Exception as e:
-        raise CustomException(e, sys) from e
+        raise MyException(e, sys) from e
 
 
 def write_yaml_file(file_path: str, content: object, replace: bool = False) -> None:
@@ -28,7 +28,7 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
         with open(file_path, "w") as file:
             yaml.dump(content, file)
     except Exception as e:
-        raise CustomException(e, sys) from e
+        raise MyException(e, sys) from e
 
 
 def load_object(file_path: str) -> object:
@@ -42,8 +42,7 @@ def load_object(file_path: str) -> object:
             obj = dill.load(file_obj)
         return obj
     except Exception as e:
-        raise CustomException(e, sys) from e
-
+        raise MyException(e, sys) from e
 
 def save_numpy_array_data(file_path: str, array: np.array):
     """
@@ -57,7 +56,7 @@ def save_numpy_array_data(file_path: str, array: np.array):
         with open(file_path, 'wb') as file_obj:
             np.save(file_obj, array)
     except Exception as e:
-        raise CustomException(e, sys) from e
+        raise MyException(e, sys) from e
 
 
 def load_numpy_array_data(file_path: str) -> np.array:
@@ -70,7 +69,7 @@ def load_numpy_array_data(file_path: str) -> np.array:
         with open(file_path, 'rb') as file_obj:
             return np.load(file_obj)
     except Exception as e:
-        raise CustomException(e, sys) from e
+        raise MyException(e, sys) from e
 
 
 def save_object(file_path: str, obj: object) -> None:
@@ -84,7 +83,8 @@ def save_object(file_path: str, obj: object) -> None:
         logging.info("Exited the save_object method of utils")
 
     except Exception as e:
-        raise CustomException(e, sys) from e
+        raise MyException(e, sys) from e
+
 
 # def drop_columns(df: DataFrame, cols: list)-> DataFrame:
 
@@ -99,7 +99,7 @@ def save_object(file_path: str, obj: object) -> None:
 #         df = df.drop(columns=cols, axis=1)
 
 #         logging.info("Exited the drop_columns method of utils")
-
+        
 #         return df
 #     except Exception as e:
-#         raise CustomException(e, sys) from e
+#         raise MyException(e, sys) from e
