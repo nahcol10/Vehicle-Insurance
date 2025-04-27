@@ -1,143 +1,234 @@
-1. Create project template by executing template.py file
-2. Write the code on setup.py and pyproject.toml file to import local packages
-   >> Find more about "setup.py and pyproject.toml" at crashcourse.txt
-3. Create a virtual env, activate it and install the requirements from requirements.txt
+# Vehicle Insurance Project - Complete Implementation Guide
+
+## Project Setup and Structure
+1. **Project Template Generation**
+   - Execute `template.py` to create the initial project structure
+   - LOGIC: This creates a standard, consistent directory structure for ML projects
+   - BEST PRACTICE: Using templates ensures all required components are included and follows software engineering principles
+
+2. **Package Configuration**
+   - Configure `setup.py` and `pyproject.toml` for local package imports
+   - LOGIC: These files help Python recognize your source code as installable packages
+   - BEST PRACTICE: Proper packaging enables modular code development and easier imports
+   - Reference detailed instructions in `crashcourse.txt`
+
+3. **Environment Setup**
+   ```bash
    conda create -n vehicle python=3.10 -y
    conda activate vehicle
-   add required modules to requirements.txt
-   Do "pip install -r requirements.txt"
-4. Do a "pip list" on terminal to make sure you have local packages installed.
+   pip install -r requirements.txt
+   pip list  # Verify local packages are installed
+   ```
+   - LOGIC: Isolated environment prevents dependency conflicts
+   - BEST PRACTICE: Always specify Python version explicitly and document all dependencies
 
------------------------------------------------ MongoDB Setup -----------------------------------------------
-5. Sign up to MongoDB Atlas and create a new project by just providing it a name then next next create.
-6. From "Create a cluster" screen, hit "create", Select M0 service keeping other services as default, hit "create deployment"
-7. Setup the username and password and then create DB user.
-8. Go to "network access" and add ip address - "0.0.0.0/0" so that we can access it from anywhere
-9. Go back to project >> "Get Connection String" >> "Drivers" >> {Driver:Python, Version:3.6 or later} 
-   >> copy and save the connection string with you(replace password). >> Done.
-10. Create folder "notebook" >> do step 11 >>  create file "mongoDB_demo.ipynb" >> select kernal>python kernal>vehicle>>
-11. Dataset added to notebook folder
-12. Push your data to mongoDB database from your python notebook.
-13. Go to mongoDB Atlas >> Database >> browse collection >> see your data in key value format
+## MongoDB Setup and Configuration
+4. **MongoDB Atlas Setup**
+   - Sign up for MongoDB Atlas and create a new project
+   - LOGIC: MongoDB provides a scalable, document-based NoSQL database ideal for storing ML datasets
+   - BEST PRACTICE: Cloud-hosted databases eliminate infrastructure management concerns
 
--------------------------------------- logging, exception and notebooks --------------------------------------
-14. Write the logger file and test it on demo.py
-15. Write the exception file and test it on demo.py
-16. EDA and Feature Engg notebook added.
+5. **Database Deployment**
+   - Choose M0 free tier service
+   - Setup username/password for database access
+   - LOGIC: Starting with free tier allows scaling later when needed
+   - BEST PRACTICE: Use strong passwords and store them securely
 
------------------------------------------------ Data Ingestion -----------------------------------------------
-17. Before we work on "Data Ingestion" component >> Declare variables within constants.__init__.py file >> 
-    add code to configuration.mongo_db_connections.py file and define the func for mondodb connection >> 
-    Inside "data_access" folder, add code to proj1_data that will use mongo_db_connections.py
-    to connect with DB, fetch data in key-val format and transform that to df >>
-    add code to entity.config_entity.py file till DataIngestionConfig class >>
-    add code to entity.artifact_entity.py file till DataIngestionArtifact class >>
-    add code to components.data_ingestion.py file >> add code to training pipeline >> 
-    run demo.py (set mongodb connection url first, see next step)
-18. To setup the connection url on mac(also work for windows), open bash/powershell terminal and run below command:
-                        *** For Bash ***
-    set: export MONGODB_URL="mongodb+srv://<username>:<password>......"
-    check: echo $MONGODB_URL
-                        *** For Powershell ***
-    set: $env:MONGODB_URL = "mongodb+srv://<username>:<password>......"
-    check: echo $env:MONGODB_URL
+6. **Network Access Configuration**
+   - Configure IP whitelist with "0.0.0.0/0" for development
+   - LOGIC: This allows connections from any IP address
+   - BEST PRACTICE: For production, restrict to specific IPs for security
 
-    To setup the connection url on Windows, open env variable setting option and add a new variable:
-    Name: MONGODB_URL, Value = <url>
-    Also add "artifact" dir to .gitignore file
+7. **Connection String Setup**
+   - Obtain connection string from MongoDB Atlas
+   - LOGIC: Connection string contains all parameters needed to establish a database connection
+   - BEST PRACTICE: Never hardcode connection strings in source code; use environment variables
 
----------------------------- Data Validation, Data Transformation & Model Trainer ----------------------------
+8. **Data Upload to MongoDB**
+   - Create notebooks directory and upload dataset
+   - Create `mongoDB_demo.ipynb` to push data to MongoDB
+   - LOGIC: Storing data in MongoDB provides flexibility for data access patterns
+   - BEST PRACTICE: Use batch operations for efficient uploads of large datasets
 
-19. Complete the work on utils.main_utils.py and config.schema.yaml file (add entire info about dataset for data validation step)
-20. Now work on the "Data Validation" component the way we did in step 17 for Data Ingestion. (Workflow mentioned below)
-21. Now work on the "Data Transformation" component the way we did in above step. (add estimator.py to entity folder)
-22. Now work on the "Model Trainer" component the way we did in above step. (add class to estimator.py in entity folder)
+## Logging, Exception Handling and EDA
+9. **Logger Implementation**
+   - Create logger module and test in `demo.py`
+   - LOGIC: Logging provides visibility into application behavior
+   - BEST PRACTICE: Use different log levels (INFO, ERROR, DEBUG) appropriately
 
-23. Before moving to next component of Model Evaluation, some AWS services setup is needed:
-      * Login to AWS console.
-      * Keep region set as - us-east-1
-      * Go to IAM >> Create new user (name: firstproj)
-      * Attach policy >> select AdministratorAccess >> next >> create user
-      * Go to the user >> Security Credentials >> Access Keys >> Create access key
-      * Select CLI >> agree to condition >> next >> Create Access Key >> download csv file
-      * Set env variables with above csv values using below method:
-      ====================================================================================
-         >> Set env var from bash terminal: <<
-         export AWS_ACCESS_KEY_ID="AWS_ACCESS_KEY_ID"
-         export AWS_SECRET_ACCESS_KEY="AWS_SECRET_ACCESS_KEY"
-         >> Check env var from bash terminal: <<
-         echo $AWS_ACCESS_KEY_ID
-         echo $AWS_SECRET_ACCESS_KEY
+10. **Exception Handling**
+    - Create custom exception classes and test in `demo.py`
+    - LOGIC: Custom exceptions improve error traceability and debugging
+    - BEST PRACTICE: Include detailed context in exception messages
 
-         >> Set env var from powershell terminal: <<
-         $env:AWS_ACCESS_KEY_ID="AWS_ACCESS_KEY_ID"
-         $env:AWS_SECRET_ACCESS_KEY="AWS_SECRET_ACCESS_KEY"
-         >> Check env var from powershell terminal: <<
-         echo $env:AWS_ACCESS_KEY_ID
-         echo $env:AWS_SECRET_ACCESS_KEY
-      ====================================================================================
-      * Now add the access key, secret key, region name to constants.__init__.py
-      * Add code to src.configuration.aws_connection.py file (To work with AWS S3 service)
-      * Ensure below info in constants.__init__.py file:
-            MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 0.02
-            MODEL_BUCKET_NAME = "my-model-mlopsproj"
-            MODEL_PUSHER_S3_KEY = "model-registry"
-      * Go to S3 service >> Create bucket >> Region: us-east-1 >> General purpose >>
-        Bucket Name: "my-model-mlopsproj" >> uncheck: "Block all public access" and acknowledge >>
-        Hit Create Bucket
-      * Now inside "src.aws_storage" code needs to be added for the configurations needed to pull 
-        and push model from AWS S3 bucket. 
-      * Inside "entity" dir we will have an "s3_estimator.py" file containing all the func to pull/push
-        data from s3 bucket.
+11. **Exploratory Data Analysis**
+    - Add EDA and Feature Engineering notebooks
+    - LOGIC: Understanding data distribution and relationships is crucial for model development
+    - BEST PRACTICE: Document all insights and reasoning behind feature engineering decisions
 
-24. Now we will start our work on "Model Evaluation" and "Model Pusher" component.
+## Data Pipeline Components
+12. **Data Ingestion Pipeline**
+    - Configure constants in `__init__.py`
+    - Implement MongoDB connection in `mongo_db_connections.py`
+    - Create data access layer in `proj1_data.py`
+    - Define entity classes in `config_entity.py` and `artifact_entity.py`
+    - Implement data ingestion component
+    - LOGIC: Modular design separates concerns and improves maintainability
+    - BEST PRACTICE: Use configuration classes to manage pipeline parameters
 
-25. Create the code structure of "Prediction Pipeline" and setup your app.py
-26. Add "static" and "template" dir to the project.
+13. **MongoDB Connection Environment Setup**
+    - For Bash:
+      ```bash
+      export MONGODB_URL="mongodb+srv://<username>:<password>......"
+      echo $MONGODB_URL  # Verify
+      ```
+    - For PowerShell:
+      ```powershell
+      $env:MONGODB_URL = "mongodb+srv://<username>:<password>......"
+      echo $env:MONGODB_URL  # Verify
+      ```
+    - For Windows Environment Variables:
+      - Add MONGODB_URL to system environment variables
+    - LOGIC: Environment variables protect sensitive credentials
+    - BEST PRACTICE: Never commit credentials to version control
 
-27. Getting started with CI-CD process:
-      * Setup the dockerfile and .dockerignore file
-      * Setup the .github\workflows dir and aws.yaml file within
-      * Go to AWS console and create a new IAM user exactly the way we did earlier (name: "usvisa-user") >>
-        Go inside user >> Security Credentials >> Access Keys >> create access key >> CLI >> check agreement
-        >> next >> create access key >> download csv
-      * Now create one ECR repo to store/save docker image:
-        AWS console >> Go to ECR >> Region: us-east-1 >> Hit create repository >>
-        repo name: vehicleproj >> hit create repository >> copy and keep uri
-      * Now create EC2 Ubuntu server >> AWS console >> EC2 >> Launch Instance >> name: vehicledata-machine
-        >> Image: Ubuntu >> AMI: Ubuntu Server 24.04 (free tier) >> Instance: T2 Medium (~chargeable-3.5rs/hr)
-        >> create new key pair (name: proj1key) >> allow for https and http traffic >> storage: 30gb >> Launch
-        >> Go to instance >> click on "Connect" >> Connect using EC2 Instance Connect 
-        >> Connect (Terminal will be launched) 
+14. **Data Validation Component**
+    - Update `main_utils.py` with validation functions
+    - Create schema definition in `schema.yaml`
+    - Implement data validation component
+    - LOGIC: Validates that incoming data matches expected schema
+    - BEST PRACTICE: Fail early if data doesn't match expectations
 
-28. Open EC2 and Install docker in EC2 Machine:
-      ## Optinal
-      sudo apt-get update -y
-      sudo apt-get upgrade
-      ## Required (Because Docker is'nt there in our EC2 server - [docker --version])
-      curl -fsSL https://get.docker.com -o get-docker.sh
-      sudo sh get-docker.sh
-      sudo usermod -aG docker ubuntu
-      newgrp docker
+15. **Data Transformation Component**
+    - Add `estimator.py` to entity folder
+    - Implement transformation logic
+    - LOGIC: Consistent preprocessing ensures model reliability
+    - BEST PRACTICE: Create reusable transformation pipelines
 
-29. Next step is to connect Github with EC2(Self hosted runner):
-      * select your project on Github >> go to settings >> Actions >> Runner >> New self hosted runner
-        >> Select OS (Linux) >> Now step by step run all "Download" related commands on EC2 server 
-        >> run first "Configure" command (hit enter instead of setting a runner group, runner name: self-hosted)
-        >> enter any additional label (hit enter to skip) >> name of work folder (again hit enter)
-        >> Now run second "Configure" command (./run.sh) and runner will get connected to Github
-        >> To crosscheck, go back to Github and click on Runner and you will see runner state as "idle"
-        >> If you do ctrl+c on EC2 server then runner will shut then restart with "./run.sh"
+16. **Model Trainer Component**
+    - Update estimator with model training classes
+    - Implement trainer component
+    - LOGIC: Encapsulates model training process
+    - BEST PRACTICE: Make hyperparameters configurable
 
-30. Setup your Github secrets: (Github project>Settings>SecretandVariable>Actions>NewRepoSecret)
-      AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY
-      AWS_DEFAULT_REGION
-      ECR_REPO
+## AWS Integration for Model Registry
+17. **AWS IAM Setup**
+    - Create IAM user with AdministratorAccess
+    - Generate and download access keys
+    - LOGIC: IAM provides secure access to AWS services
+    - BEST PRACTICE: Follow principle of least privilege in production
 
-31. CI-CD pipeline will be triggered at next commit and push.
-32. Now we need to activate the 5000 port of our EC2 instance:
-      * Go to the instance > Security > Go to Security Groups > Edit inbound rules > add rule
-        > type: Custom TCP > Port range: 5080 > 0.0.0.0/0 > Save rules
-33. Now paste the public ip address on the address bar +:5080 and your app will be launched.
-34. You can also do model training on /training route
+18. **Environment Variable Configuration**
+    - Set AWS credentials as environment variables:
+      ```bash
+      # For Bash
+      export AWS_ACCESS_KEY_ID="AWS_ACCESS_KEY_ID"
+      export AWS_SECRET_ACCESS_KEY="AWS_SECRET_ACCESS_KEY"
+      
+      # For PowerShell
+      $env:AWS_ACCESS_KEY_ID="AWS_ACCESS_KEY_ID"
+      $env:AWS_SECRET_ACCESS_KEY="AWS_SECRET_ACCESS_KEY"
+      ```
+    - LOGIC: Environment variables keep credentials out of code
+    - BEST PRACTICE: Rotate access keys regularly
+
+19. **AWS S3 Configuration**
+    - Update constants with AWS configuration
+    - Implement AWS connection in `aws_connection.py`
+    - Create S3 bucket for model storage
+    - LOGIC: S3 provides durable, scalable storage for models
+    - BEST PRACTICE: Use versioning on S3 buckets for model history
+
+20. **S3 Estimator Implementation**
+    - Create `s3_estimator.py` for model storage operations
+    - LOGIC: Abstracts S3 operations for model persistence
+    - BEST PRACTICE: Implement retry logic for network operations
+
+## Model Evaluation and Deployment
+21. **Model Evaluation Implementation**
+    - Implement model evaluation component
+    - LOGIC: Compares new models against production baseline
+    - BEST PRACTICE: Use multiple evaluation metrics
+
+22. **Model Pusher Implementation**
+    - Implement model pusher to move models to production
+    - LOGIC: Automates model deployment process
+    - BEST PRACTICE: Include model metadata with each deployed model
+
+23. **Prediction Pipeline**
+    - Create prediction pipeline structure
+    - Setup Flask application in `app.py`
+    - LOGIC: Prediction pipeline handles real-time inference
+    - BEST PRACTICE: Ensure error handling for all edge cases
+
+24. **Web Application Setup**
+    - Add static and template directories
+    - LOGIC: Provides user interface for model interaction
+    - BEST PRACTICE: Keep UI and business logic separate
+
+## CI/CD Setup
+25. **Docker Configuration**
+    - Create Dockerfile and .dockerignore
+    - LOGIC: Containerization ensures consistent runtime environment
+    - BEST PRACTICE: Use multi-stage builds for smaller images
+
+26. **GitHub Actions Workflow**
+    - Create AWS deployment workflow in `.github/workflows/aws.yaml`
+    - LOGIC: Automates testing and deployment process
+    - BEST PRACTICE: Include linting and tests in CI pipeline
+
+27. **ECR Repository Setup**
+    - Create ECR repository for Docker images
+    - LOGIC: Provides secure storage for container images
+    - BEST PRACTICE: Implement image scanning for security
+
+28. **EC2 Instance Setup**
+    - Launch EC2 instance for deployment
+    - Configure security group
+    - LOGIC: EC2 provides scalable compute for hosting
+    - BEST PRACTICE: Use auto-scaling groups for production
+
+29. **Docker Installation on EC2**
+    ```bash
+    sudo apt-get update -y
+    sudo apt-get upgrade
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
+    sudo usermod -aG docker ubuntu
+    newgrp docker
+    ```
+    - LOGIC: Docker enables consistent deployments
+    - BEST PRACTICE: Keep Docker up-to-date for security patches
+
+30. **GitHub Self-hosted Runner Setup**
+    - Configure self-hosted runner on EC2
+    - LOGIC: Self-hosted runners provide direct deployment access
+    - BEST PRACTICE: Use dedicated runners for production deployments
+
+31. **GitHub Secrets Configuration**
+    - Add secrets for AWS credentials:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - ECR_REPO
+    - LOGIC: Secrets enable secure CI/CD operations
+    - BEST PRACTICE: Rotate secrets regularly
+
+32. **EC2 Port Configuration**
+    - Configure inbound rules to allow traffic on port 5080
+    - LOGIC: Opens required ports for web application access
+    - BEST PRACTICE: Allow only necessary ports
+
+33. **Application Testing**
+    - Access application via EC2 public IP on port 5080
+    - Test training endpoint at /training route
+    - LOGIC: Verifies end-to-end functionality
+    - BEST PRACTICE: Implement health check endpoints
+
+## Additional Best Practices
+- Implement comprehensive unit and integration tests
+- Set up monitoring and alerting for production deployments
+- Document API endpoints and expected inputs/outputs
+- Create infrastructure as code using Terraform or CloudFormation
+- Implement blue-green deployment strategy for zero-downtime updates
+- Regularly audit security configurations and dependencies
